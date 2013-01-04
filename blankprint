@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /root/donationprint
-exec python2 donationprint.py 2>&1
+exec python2 blankprint.py 2>&1
 
