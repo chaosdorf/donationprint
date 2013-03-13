@@ -5,52 +5,98 @@ use warnings;
 use 5.014;
 
 use File::Slurp qw(read_file);
+use Getopt::Long;
 
 our $VERSION = '0.00';
 
 my $template = 'bon-tmpl.eps';
+my $opt = {};
 
-my ( $amount, $date, $account, $bank, $person ) = @ARGV;
+GetOptions(
+	$opt,
+	qw{
+		account=s
+		amount=i
+		bank=s
+		date=s
+		person=s
+		receiptdorf
+		receiptmail
+		mail1=s
+		mail2=s
+		mail3=s
+	},
+);
+
+$opt->{account} //= q{};
+$opt->{amount} //= q{     };
+$opt->{bank} //= q{};
+$opt->{date} //= q{};
+$opt->{person} //= q{};
+$opt->{mail1} //= q{};
+$opt->{mail2} //= q{};
+$opt->{mail3} //= q{};
+
 my $default_font     = 'Courier-Bold';
 my $default_fontsize = 15;
 my $cfg              = {
 	account => {
-		value  => $account,
-		offset => [ 5, 285 ],
+		value  => $opt->{account},
+		offset => [ 5, 320 ],
 	},
 	amount5 => {
-		value => substr( $amount, -1, 1 ) // q{},
+		value => substr( $opt->{amount}, -1, 1 ) // q{},
 		offset => [ 134, 423 ],
 	},
 	amount4 => {
-		value => substr( $amount, -2, 1 ) // q{},
+		value => substr( $opt->{amount}, -2, 1 ) // q{},
 		offset => [ 118, 423 ],
 	},
 	amount3 => {
-		value => substr( $amount, -3, 1 ) // q{},
+		value => substr( $opt->{amount}, -3, 1 ) // q{},
 		offset => [ 90, 423 ],
 	},
 	amount2 => {
-		value => substr( $amount, -4, 1 ) // q{},
+		value => substr( $opt->{amount}, -4, 1 ) // q{},
 		offset => [ 72, 423 ],
 	},
 	amount1 => {
-		value => substr( $amount, -5, 1 ) // q{},
+		value => substr( $opt->{amount}, -5, 1 ) // q{},
 		offset => [ 54, 423 ],
 	},
 	bank => {
-		value  => $bank,
-		offset => [ 5, 320 ],
+		value  => $opt->{bank},
+		offset => [ 5, 285 ],
 	},
 	date => {
-		value    => $date,
+		value    => $opt->{date},
 		offset   => [ 5, 370 ],
 		font     => 'Courier',
 		fontsize => 12,
 	},
 	person => {
-		value  => $person,
+		value  => $opt->{person},
 		offset => [ 5, 250 ],
+	},
+	receiptdorf => {
+		value => $opt->{receiptdorf} ? 'X' : q{},
+		offset => [7, 130],
+	},
+	receiptmail => {
+		value => $opt->{receiptmail} ? 'X' : q{},
+		offset => [7, 100],
+	},
+	mail1 => {
+		value => $opt->{mail1},
+		offset => [5, 67],
+	},
+	mail2 => {
+		value => $opt->{mail2},
+		offset => [5, 35],
+	},
+	mail3 => {
+		value => $opt->{mail3},
+		offset => [5, 5],
 	},
 };
 
