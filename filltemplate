@@ -10,58 +10,61 @@ our $VERSION = '0.00';
 
 my $template = 'bon-tmpl.eps';
 
-my ($amount, $date, $account, $bank, $person) = @ARGV;
-my $default_font = 'Courier-Bold';
+my ( $amount, $date, $account, $bank, $person ) = @ARGV;
+my $default_font     = 'Courier-Bold';
 my $default_fontsize = 15;
-my $cfg = {
+my $cfg              = {
 	account => {
-		value => $account,
-		offset => [5, 285],
+		value  => $account,
+		offset => [ 5, 285 ],
 	},
 	amount5 => {
-		value => substr($amount, -1, 1) // q{},
-		offset => [134, 423],
+		value => substr( $amount, -1, 1 ) // q{},
+		offset => [ 134, 423 ],
 	},
 	amount4 => {
-		value => substr($amount, -2, 1) // q{},
-		offset => [118, 423],
+		value => substr( $amount, -2, 1 ) // q{},
+		offset => [ 118, 423 ],
 	},
 	amount3 => {
-		value => substr($amount, -3, 1) // q{},
-		offset => [90, 423],
+		value => substr( $amount, -3, 1 ) // q{},
+		offset => [ 90, 423 ],
 	},
 	amount2 => {
-		value => substr($amount, -4, 1) // q{},
-		offset => [72, 423],
+		value => substr( $amount, -4, 1 ) // q{},
+		offset => [ 72, 423 ],
 	},
 	amount1 => {
-		value => substr($amount, -5, 1) // q{},
-		offset => [54, 423],
+		value => substr( $amount, -5, 1 ) // q{},
+		offset => [ 54, 423 ],
 	},
 	bank => {
-		value => $bank,
-		offset => [5, 320],
+		value  => $bank,
+		offset => [ 5, 320 ],
 	},
 	date => {
-		value => $date,
-		offset => [5, 370],
-		font => 'Courier',
+		value    => $date,
+		offset   => [ 5, 370 ],
+		font     => 'Courier',
 		fontsize => 12,
 	},
 	person => {
-		value => $person,
-		offset => [5, 250],
+		value  => $person,
+		offset => [ 5, 250 ],
 	},
 };
 
-for my $line (read_file($template)) {
+for my $line ( read_file($template) ) {
 	chomp $line;
-	if ($line eq 'showpage') {
-		for my $key (keys %{$cfg}) {
-			printf("/%s %s selectfont\n", $cfg->{$key}->{font} // $default_font,
-			$cfg->{$key}->{fontsize} // $default_fontsize);
-			printf("%d %d moveto\n", @{$cfg->{$key}->{offset}});
-			printf("(%s) show\n", $cfg->{$key}->{value});
+	if ( $line eq 'showpage' ) {
+		for my $key ( keys %{$cfg} ) {
+			printf(
+				"/%s %s selectfont\n",
+				$cfg->{$key}->{font} // $default_font,
+				$cfg->{$key}->{fontsize} // $default_fontsize
+			);
+			printf( "%d %d moveto\n", @{ $cfg->{$key}->{offset} } );
+			printf( "(%s) show\n",    $cfg->{$key}->{value} );
 		}
 	}
 	say $line;

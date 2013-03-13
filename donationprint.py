@@ -67,29 +67,9 @@ def main():
     syslog.syslog("Ready. Awaiting card!")
 
     def printform(fields=None):
-	blinken = subprocess.call([os.path.join(script_path,"statusblink")])
-	counter = subprocess.call([os.path.join(script_path,"increment_filled")])
-        tmpl = file(os.path.join(script_path, "bon-tmpl.eps"), "r")
-        lp = subprocess.Popen(["lp", "-d", "Star_TSP143_"],
-                                stdin=subprocess.PIPE).stdin
-        for line in tmpl:
-            line = line.rstrip()
-            if (line == "showpage") and (fields is not None):
-                print >>lp, "/{font_name} {font_size} selectfont".format(**cfg)
-                for name, text in fields.iteritems():
-                    print >>lp, "{left} {bottom} moveto".format(
-                        left=cfg["pos_left"], bottom=cfg["pos_bottom_" + name])
-                    print >>lp, "(" + text + ") show"
-            print >>lp, line
-        lp.close()
-        tmpl.close()
-
-
-    def printthanks():
-        subprocess.call(["lp", "-d", "Star_TSP143_",
-                         "-o", "media=om_x72-mmy50-mm_71.96x49.74mm",
-                         os.path.join(script_path, "danke.ps")
-                        ])
+        blinken = subprocess.call([os.path.join(script_path,"statusblink")])
+        counter = subprocess.call([os.path.join(script_path,"increment_filled")])
+        subprocess.call(["./printtemplate", "", fields.bank, fields.acnt, ""])
 
     while True:
         try:
@@ -108,7 +88,6 @@ def main():
                         "date": "", #time.strftime("%d.%m.%Y"),
                         })
                     syslog.syslog("Printed form. Now printing thanks.")
-		    #printthanks()
                 else:
                     warn("Unreadable card. Printing blank bon.")
                     #printform()

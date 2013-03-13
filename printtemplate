@@ -1,0 +1,69 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use 5.014;
+use DateTime;
+use IPC::Run qw(run);
+
+our $VERSION = '0.00';
+
+my $target_day = 7;
+
+###
+
+my ($amount, $account, $bank, $person) = @ARGV;
+
+my @template = ('./filltemplate', $amount, 'FIXME', $account, $bank, $person);
+my @print = ('cat');
+
+my $today = DateTime->now( time_zone => 'Europe/Berlin' );
+my $target = $today->add( DateTime::Duration->new(days => 14) );
+
+if ($target->day < $target_day) {
+}
+else {
+	$target = $target->add(DateTime::Duration->new(months => 1));
+}
+$target->set_day($target_day);
+$template[2] = $target->strftime('%d.%m.%Y');
+
+run \@template, '|', \@print;
+
+__END__
+
+=head1 NAME
+
+=head1 SYNOPSIS
+
+=head1 VERSION
+
+=head1 DESCRIPTION
+
+=head1 OPTIONS
+
+=over
+
+=back
+
+=head1 EXIT STATUS
+
+=head1 CONFIGURATION
+
+None.
+
+=head1 DEPENDENCIES
+
+=over
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head1 AUTHOR
+
+Copyright (C) 2013 by Daniel Friesel E<lt>derf@finalrewind.orgE<gt>
+
+=head1 LICENSE
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
