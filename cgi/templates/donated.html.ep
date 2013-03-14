@@ -4,5 +4,9 @@ Eingangstür)
 </div>
 
 <div class="thanks">
-Danke für die Spende
+Danke für die Spende!
 </div>
+
+<pre>
+%= $output
+</pre>

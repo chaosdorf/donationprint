@@ -4,6 +4,7 @@ use warnings;
 use 5.014;
 use utf8;
 
+use IPC::Run qw(run);
 use Mojolicious::Lite;
 
 our $VERSION = '0.00';
@@ -21,39 +22,42 @@ get '/' => sub {
 post '/print' => sub {
 	my ($self) = @_;
 
-	my $amount           = $self->param('amount');
-	my $account          = $self->param('account');
-	my $bank             = $self->param('bank');
-	my $person           = $self->param('person');
-	my $want_receiptdorf = $self->param('receiptdorf') // 0;
-	my $want_receiptmail = $self->param('receiptmail') // 0;
-	my $mail1            = $self->param('mail1');
-	my $mail2            = $self->param('mail2');
-	my $mail3            = $self->param('mail3');
+	my %arg = map { $_ => undef } qw(
+		account amount bank person mail1 mail2 mail3);
+	my %opt = map { $_ => undef } qw(
+		receiptdorf receiptmail);
+
+	for my $key (keys %arg) {
+		$arg{$key} = $self->param($key);
+	}
+	for my $key (keys %opt) {
+		$opt{$key} = $self->param($key);
+	}
 
 	my @errors;
 
-	# elements are changed in-place
-	for my $value ( $amount, $account, $bank, $person, $mail1, $mail2, $mail3 )
-	{
-		$value =~ tr{Ä}{Ae};
-		$value =~ tr{Ö}{Oe};
-		$value =~ tr{Ü}{Ue};
-		$value =~ tr{ä}{ae};
-		$value =~ tr{ö}{oe};
-		$value =~ tr{ü}{ue};
-		$value =~ tr{ß}{sz};
-		$value =~ tr{0-9a-zA-Z .,_-}{}cd;
+	for my $key (keys %arg) {
+		if (defined $arg{$key}) {
+			$arg{$key} =~ tr{Ä}{Ae};
+			$arg{$key} =~ tr{Ö}{Oe};
+			$arg{$key} =~ tr{Ü}{Ue};
+			$arg{$key} =~ tr{ä}{ae};
+			$arg{$key} =~ tr{ö}{oe};
+			$arg{$key} =~ tr{ü}{ue};
+			$arg{$key} =~ tr{ß}{sz};
+			$arg{$key} =~ tr{0-9a-zA-Z .,_-}{}cd;
+		}
 	}
 
-	if ( $amount !~ $re_amount ) {
-		push( @errors, 'amount must be a number' );
+	for my $key (qw(amount)) {
+		if (defined $arg{$key} and $arg{$key} !~ $re_amount) {
+			push(@errors, "$key must be an amount" );
+		}
 	}
-	if ( $account !~ $re_number ) {
-		push( @errors, 'account must be a number' );
-	}
-	if ( $bank !~ $re_number ) {
-		push( @errors, 'bank must be a number' );
+	for my $key (qw(account bank)) {
+		if (defined $arg{$key} and $arg{$key} !~ $re_number) {
+			push(@errors, "$key must be a number" );
+		}
 	}
 
 	if (@errors) {
@@ -64,7 +68,20 @@ post '/print' => sub {
 		);
 	}
 	else {
-		$self->render( 'donated', version => $VERSION, );
+		my $out;
+		my @cmd = ('./printtemplate');
+		for my $key (keys %arg) {
+			if (defined $arg{$key}) {
+				push(@cmd, "--${key}=$arg{$key}");
+			}
+		}
+		for my $key (keys %opt) {
+			if (defined $opt{$key}) {
+				push(@cmd, "--${key}");
+			}
+		}
+		run(\@cmd, '<', \undef, '>&', \$out);
+		$self->render( 'donated', output => $out, version => $VERSION, );
 	}
 
 	return;
