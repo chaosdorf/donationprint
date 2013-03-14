@@ -46,6 +46,9 @@ post '/print' => sub {
 			$arg{$key} =~ tr{ü}{ue};
 			$arg{$key} =~ tr{ß}{sz};
 			$arg{$key} =~ tr{0-9a-zA-Z .,_-}{}cd;
+			if (length($arg{$key}) == 0) {
+				$arg{$key} = undef;
+			}
 		}
 	}
 

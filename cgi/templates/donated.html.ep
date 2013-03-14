@@ -1,12 +1,11 @@
 <div class="info">
-Das Spendenformular wird jetzt ausgedruckt (am Bondrucken neben der
-Eingangstür)
+Das Spendenformular wird jetzt am Bondrucker neben der Eingangstür ausgedruckt.
 </div>
 
 <div class="thanks">
 Danke für die Spende!
 </div>
 
-<pre>
+<pre class="lpout">
 %= $output
 </pre>
