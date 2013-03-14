@@ -24,6 +24,7 @@
 	}
 
 	div.break {
+		clear: both;
 		height: 1em;
 	}
 
@@ -34,7 +35,7 @@
 
 	div.field div.desc {
 		float: left;
-		width: 14em;
+		width: 20em;
 		text-align: right;
 		padding-right: 0.5em;
 	}
@@ -59,11 +60,22 @@
 </head>
 <body>
 
+<div class="manual">
+<a href="https://wiki.chaosdorf.de/Spendenterminal">Chaosdorf Spendenterminal</a>.
+Anleitung zum Spenden:
+<ul>
+<li>Relevante Felder ausfüllen (oder leer lassen und von Hand nachtragen)</li>
+<li>Auf "Drucken" klicken</li>
+<li>Ausdruck aus dem Spendendrucker neben der Tür entnehmen</li>
+<li>Unterschreiben und in den gelben Vorstandsbriefkasten werfen</li>
+</ul>
+
 <div class="inputs">
 %= form_for print => (method => 'POST') => begin
 <div class="field">
-<div class="desc">Spendenmenge</div>
+<div class="desc">Betrag</div>
 %= text_field 'amount'
+€
 </div>
 <div class="field">
 <div class="desc">Kontonummer</div>
@@ -77,16 +89,32 @@
 <div class="desc">Kontoinhaber</div>
 %= text_field 'person'
 </div>
+<div class="break"></div>
 <div class="field">
-<div class="desc">Anschrift</div>
+<div class="desc">Ich wünsche eine Spendenquittung und hole diese
+im Chaosdorf ab</div>
+%= check_box receiptdorf => 1
+</div>
+<div class="break"></div>
+<div class="field">
+<div class="desc">Ich wünsche eine Spendenquittung und möchte diese per
+Post erhalten</div>
+%= check_box receiptmail => 1
+</div>
+<div class="break"></div>
+<div class="field">
+<div class="desc">Anschrift für die Spendenquittung</div>
+</div>
+<div class="field">
+<div class="desc">Name</div>
 %= text_field 'mail1'
 </div>
 <div class="field">
-<div class="desc">Anschrift</div>
+<div class="desc">Straße, Hausnummer</div>
 %= text_field 'mail2'
 </div>
 <div class="field">
-<div class="desc">Anschrift</div>
+<div class="desc">PLZ, Stadt</div>
 %= text_field 'mail3'
 </div>
 
