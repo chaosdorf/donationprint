@@ -23,26 +23,31 @@ post '/print' => sub {
 	my ($self) = @_;
 
 	my %arg = map { $_ => undef } qw(
-		account amount bank person mail1 mail2 mail3);
+	  account amount bank person mail1 mail2 mail3);
 	my %opt = map { $_ => undef } qw(
-		receiptdorf receiptmail);
+	  receiptdorf receiptmail);
 
-	for my $key (keys %arg) {
+	for my $key ( keys %arg ) {
 		$arg{$key} = $self->param($key);
 	}
-	for my $key (keys %opt) {
+	for my $key ( keys %opt ) {
 		$opt{$key} = $self->param($key);
 	}
 
 	my @errors;
 
-	if ($arg{amount}) {
-		$arg{amount} =~ tr{,}{.};
-		$arg{amount} = int($arg{amouunt} * 100);
+	if ( $arg{amount} ) {
+		if ( $arg{amount} !~ $re_amount ) {
+			push( @errors, "amount must be an amount" );
+		}
+		else {
+			$arg{amount} =~ tr{,}{.};
+			$arg{amount} = int( $arg{amount} * 100 );
+		}
 	}
 
-	for my $key (keys %arg) {
-		if (defined $arg{$key}) {
+	for my $key ( keys %arg ) {
+		if ( defined $arg{$key} ) {
 			$arg{$key} =~ s{Ä}{Ae}g;
 			$arg{$key} =~ s{Ö}{Oe}g;
 			$arg{$key} =~ s{Ü}{Ue}g;
@@ -51,20 +56,15 @@ post '/print' => sub {
 			$arg{$key} =~ s{ü}{ue}g;
 			$arg{$key} =~ s{ß}{sz}g;
 			$arg{$key} =~ tr{0-9a-zA-Z .,_-}{}cd;
-			if (length($arg{$key}) == 0) {
+			if ( length( $arg{$key} ) == 0 ) {
 				$arg{$key} = undef;
 			}
 		}
 	}
 
-	for my $key (qw(amount)) {
-		if (defined $arg{$key} and $arg{$key} !~ $re_amount) {
-			push(@errors, "$key must be an amount" );
-		}
-	}
 	for my $key (qw(account bank)) {
-		if (defined $arg{$key} and $arg{$key} !~ $re_number) {
-			push(@errors, "$key must be a number" );
+		if ( defined $arg{$key} and $arg{$key} !~ $re_number ) {
+			push( @errors, "$key must be a number" );
 		}
 	}
 
@@ -78,18 +78,22 @@ post '/print' => sub {
 	else {
 		my $out;
 		my @cmd = ('./printtemplate');
-		for my $key (keys %arg) {
-			if (defined $arg{$key}) {
-				push(@cmd, "--${key}=$arg{$key}");
+		for my $key ( keys %arg ) {
+			if ( defined $arg{$key} ) {
+				push( @cmd, "--${key}=$arg{$key}" );
 			}
 		}
-		for my $key (keys %opt) {
-			if (defined $opt{$key}) {
-				push(@cmd, "--${key}");
+		for my $key ( keys %opt ) {
+			if ( defined $opt{$key} ) {
+				push( @cmd, "--${key}" );
 			}
 		}
-		run(\@cmd, '<', \undef, '>&', \$out);
-		$self->render( 'donated', output => $out, version => $VERSION, );
+		run( \@cmd, '<', \undef, '>&', \$out );
+		$self->render(
+			'donated',
+			output  => $out,
+			version => $VERSION,
+		);
 	}
 
 	return;
