@@ -36,6 +36,11 @@ post '/print' => sub {
 
 	my @errors;
 
+	if ($arg{amount}) {
+		$arg{amount} =~ tr{,}{.};
+		$arg{amount} = int($arg{amouunt} * 100);
+	}
+
 	for my $key (keys %arg) {
 		if (defined $arg{$key}) {
 			$arg{$key} =~ tr{Ä}{Ae};
