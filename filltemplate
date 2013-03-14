@@ -10,32 +10,32 @@ use Getopt::Long;
 our $VERSION = '0.00';
 
 my $template = 'bon-tmpl.eps';
-my $opt = {};
+my $opt      = {};
 
 GetOptions(
 	$opt,
 	qw{
-		account=s
-		amount=i
-		bank=s
-		date=s
-		person=s
-		receiptdorf
-		receiptmail
-		mail1=s
-		mail2=s
-		mail3=s
-	},
+	  account=s
+	  amount=i
+	  bank=s
+	  date=s
+	  person=s
+	  receiptdorf
+	  receiptmail
+	  mail1=s
+	  mail2=s
+	  mail3=s
+	  },
 );
 
 $opt->{account} //= q{};
-$opt->{amount} //= q{     };
-$opt->{bank} //= q{};
-$opt->{date} //= q{};
-$opt->{person} //= q{};
-$opt->{mail1} //= q{};
-$opt->{mail2} //= q{};
-$opt->{mail3} //= q{};
+$opt->{amount}  //= q{     };
+$opt->{bank}    //= q{};
+$opt->{date}    //= q{};
+$opt->{person}  //= q{};
+$opt->{mail1}   //= q{};
+$opt->{mail2}   //= q{};
+$opt->{mail3}   //= q{};
 
 my $default_font     = 'Courier-Bold';
 my $default_fontsize = 15;
@@ -80,23 +80,23 @@ my $cfg              = {
 	},
 	receiptdorf => {
 		value => $opt->{receiptdorf} ? 'X' : q{},
-		offset => [7, 130],
+		offset => [ 7, 130 ],
 	},
 	receiptmail => {
 		value => $opt->{receiptmail} ? 'X' : q{},
-		offset => [7, 100],
+		offset => [ 7, 100 ],
 	},
 	mail1 => {
-		value => $opt->{mail1},
-		offset => [5, 67],
+		value  => $opt->{mail1},
+		offset => [ 5, 67 ],
 	},
 	mail2 => {
-		value => $opt->{mail2},
-		offset => [5, 35],
+		value  => $opt->{mail2},
+		offset => [ 5, 35 ],
 	},
 	mail3 => {
-		value => $opt->{mail3},
-		offset => [5, 5],
+		value  => $opt->{mail3},
+		offset => [ 5, 5 ],
 	},
 };
 

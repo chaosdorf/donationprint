@@ -12,18 +12,16 @@ my $target_day = 7;
 
 ###
 
-my ($amount, $account, $bank, $person) = @ARGV;
+my ( $amount, $account, $bank, $person ) = @ARGV;
 
-my @template = ('./filltemplate', $amount, 'FIXME', $account, $bank, $person);
+my @template = ( './filltemplate', $amount, 'FIXME', $account, $bank, $person );
 my @print = ('cat');
 
 my $today = DateTime->now( time_zone => 'Europe/Berlin' );
-my $target = $today->add( DateTime::Duration->new(days => 14) );
+my $target = $today->add( DateTime::Duration->new( days => 14 ) );
 
-if ($target->day < $target_day) {
-}
-else {
-	$target = $target->add(DateTime::Duration->new(months => 1));
+if ( $target->day >= $target_day ) {
+	$target = $target->add( DateTime::Duration->new( months => 1 ) );
 }
 $target->set_day($target_day);
 $template[2] = $target->strftime('%d.%m.%Y');
