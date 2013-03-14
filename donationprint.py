@@ -69,7 +69,7 @@ def main():
     def printform(fields=None):
         blinken = subprocess.call([os.path.join(script_path,"statusblink")])
         counter = subprocess.call([os.path.join(script_path,"increment_filled")])
-        subprocess.call(["./printtemplate", "", fields.bank, fields.acnt, ""])
+        subprocess.call(["./printtemplate", "", fields['bank'], fields['acnt'], ""])
 
     while True:
         try:
