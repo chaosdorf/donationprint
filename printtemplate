@@ -13,7 +13,7 @@ my $target_day = 7;
 ###
 
 my @template = ( './filltemplate', @ARGV);
-my @print = ('cat');
+my @print = (qw(lp -d Star_TSP143_));
 
 my $today = DateTime->now( time_zone => 'Europe/Berlin' );
 my $target = $today->add( DateTime::Duration->new( days => 14 ) );
