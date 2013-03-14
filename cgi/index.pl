@@ -43,13 +43,13 @@ post '/print' => sub {
 
 	for my $key (keys %arg) {
 		if (defined $arg{$key}) {
-			$arg{$key} =~ tr{Ä}{Ae};
-			$arg{$key} =~ tr{Ö}{Oe};
-			$arg{$key} =~ tr{Ü}{Ue};
-			$arg{$key} =~ tr{ä}{ae};
-			$arg{$key} =~ tr{ö}{oe};
-			$arg{$key} =~ tr{ü}{ue};
-			$arg{$key} =~ tr{ß}{sz};
+			$arg{$key} =~ s{Ä}{Ae}g;
+			$arg{$key} =~ s{Ö}{Oe}g;
+			$arg{$key} =~ s{Ü}{Ue}g;
+			$arg{$key} =~ s{ä}{ae}g;
+			$arg{$key} =~ s{ö}{oe}g;
+			$arg{$key} =~ s{ü}{ue}g;
+			$arg{$key} =~ s{ß}{sz}g;
 			$arg{$key} =~ tr{0-9a-zA-Z .,_-}{}cd;
 			if (length($arg{$key}) == 0) {
 				$arg{$key} = undef;
