@@ -44,8 +44,15 @@
 		content: ":";
 	}
 
-	input, select {
-		border: 1px solid black;
+	div.field input, select {
+		height: 2em;
+		border-left: none;
+		border-top: none;
+		border-right: none;
+		border-bottom: 2px solid black;
+		margin-bottom: 0.5em;
+		font-family: "Courier New",Serif;
+		font-weight: bold;
 	}
 
 	div.notes {
