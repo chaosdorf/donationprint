@@ -17,6 +17,7 @@ Anleitung zum Spenden:
 <li>Ausdruck aus dem Spendendrucker neben der Tür entnehmen</li>
 <li>Unterschreiben und in den gelben Vorstandsbriefkasten werfen</li>
 </ul>
+</div> <!-- manual -->
 
 <div class="inputs">
 %= form_for print => (method => 'POST') => begin
@@ -70,4 +71,4 @@ Post erhalten</div>
 
 %= end
 
-</div>
+</div> <!-- inputs -->
