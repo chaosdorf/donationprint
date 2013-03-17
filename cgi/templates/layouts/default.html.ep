@@ -10,13 +10,17 @@
 	}
 
 	div.about {
-		margin-top: 2em;
+		position: absolute;
+		top: 0.5em;
+		right: 1em;
+		font-family: Monospace;
 		color: #666666;
 	}
 
 	div.about a {
 		color: #000066;
-		text-decoration: non;
+		font-family: Sans-Serif;
+		text-decoration: none;
 	}
 
 	span.optional {
@@ -66,6 +70,12 @@
 	</style>
 </head>
 <body>
+
+<div class="about">
+<a href="https://github.com/chaosdorf/donationprint">donationprint</a> —
+<a href="https://wiki.chaosdorf.de/Spendenterminal">about</a><br/>
+v<%= $version %>
+</div>
 
 %= content
 

@@ -7,7 +7,7 @@ use utf8;
 use IPC::Run qw(run);
 use Mojolicious::Lite;
 
-our $VERSION = '0.00';
+our $VERSION = qx{git describe --dirty} || '0.01';
 
 my $re_amount = qr{ ^ \d* [,.]? \d{0,2} $ }x;
 my $re_number = qr{ ^ \d* $ }x;
