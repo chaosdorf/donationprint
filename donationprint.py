@@ -80,11 +80,23 @@ def main():
                 newdata = "".join(map(chr, data))
                 account = newdata[241:251]
                 bank = newdata[232:240]
+		iban = ""
+		try:
+		      import iban as ib
+		      iban = ib.create_iban("DE", bank, account)
+		except Exception as ex:
+                # debug
+                # syslog.syslog("ERROR create_iban:" + str(ex))
+		      bic = ""
+		try:
+		      bic = getBic(bank)
+		except Exception as ex:
+		      syslog.syslog("ERROR getBic:" + str(ex))
                 if account.isdigit() and bank.isdigit():
                     syslog.syslog("Got working card. Printing form.")
                     printform({
-                        "acnt": account,
-                        "bank": bank,
+                        "acnt": iban,
+                        "bank": bic,
                         "date": "", #time.strftime("%d.%m.%Y"),
                         })
                     syslog.syslog("Printed form. Now printing thanks.")
@@ -107,5 +119,14 @@ def main():
                     data = []
                     swiped = False
                     continue
+
+	def getBic(bank):
+            import csv
+            with open('/root/donationprint/bankid2bic.csv', 'rb') as f:
+                 reader = csv.reader(f)
+                 for row in reader:
+                      if bank == row[0]:
+                           return row[1][:-3] + "XXX"
+            return "ERROR"
 
 main()
