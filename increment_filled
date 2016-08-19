@@ -2,8 +2,8 @@
 
 COUNTER=0
 
-if [ -e /root/donationprint/cnt_filled ]; then
-	COUNTER="$(cat /root/donationprint/cnt_filled)"
+if [ -e /boot/cnt_filled ]; then
+	COUNTER="$(cat /boot/cnt_filled)"
 fi
 
-echo $(( COUNTER + 1 )) > /root/donationprint/cnt_filled
+echo $(( COUNTER + 1 )) > /boot/cnt_filled

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use 5.014;
 use DateTime;
+use File::Slurp qw(slurp write_file);
 use IPC::Run qw(run);
 
 our $VERSION = '0.00';
@@ -11,6 +12,9 @@ our $VERSION = '0.00';
 my $target_day = 7;
 
 ###
+
+my $separef = slurp('/boot/separef') // 10001;
+chomp $separef;
 
 my @template = ( './filltemplate', @ARGV);
 my @print = (qw(lp -d Star_TSP143_));
@@ -22,9 +26,12 @@ if ( $target->day >= $target_day ) {
 	$target = $target->add( DateTime::Duration->new( months => 1 ) );
 }
 $target->set_day($target_day);
-push(@template, $target->strftime('--date=%d.%m.%Y'));
+#push(@template, $target->strftime('--date=%d.%m.%Y'));
+push(@template, '--separef=SP-' . $separef);
 
 run \@template, '|', \@print;
+
+write_file('/boot/separef', $separef + 1);
 
 __END__
 

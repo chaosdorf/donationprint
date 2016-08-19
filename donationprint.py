@@ -67,7 +67,6 @@ def main():
     syslog.syslog("Ready. Awaiting card!")
 
     def printform(fields=None):
-        blinken = subprocess.call([os.path.join(script_path,"statusblink")])
         counter = subprocess.call([os.path.join(script_path,"increment_filled")])
         subprocess.call(["./printtemplate", "", "--bank=" + fields['bank'], "--account=" + fields['acnt'], ""])
 

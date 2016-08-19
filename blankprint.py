@@ -4,8 +4,6 @@
 import os
 import sys
 import syslog 
-import usb.core
-import usb.util
 import subprocess
 import time
 import RPi.GPIO as gpio
@@ -36,7 +34,7 @@ def main():
     def printform(fields=None):
         blinken = subprocess.call([os.path.join(script_path,"statusblink")])
         increment = subprocess.call([os.path.join(script_path,"increment_blank")])
-	tmpl = file(os.path.join(script_path, "bon-tmpl.eps"), "r")
+        tmpl = file(os.path.join(script_path, "bon-tmpl.eps"), "r")
         lp = subprocess.Popen(["lp", "-d", "Star_TSP143_"],
                                 stdin=subprocess.PIPE).stdin
         for line in tmpl:
@@ -50,21 +48,6 @@ def main():
             print >>lp, line
         lp.close()
         tmpl.close()
-
-
-    gpio.setmode(gpio.BCM)
-    gpio.setup(15, gpio.IN, pull_up_down=gpio.PUD_UP)
-    pressed = False
-
-    while True:
-        if gpio.input(15) == 0:
-            syslog.syslog("button pressed")
-            if pressed == False:
-                pressed = True
-                syslog.syslog("printing")
-                printform()
-        else:
-            pressed = False
-        time.sleep(0.1)
+        printform()
 
 main()

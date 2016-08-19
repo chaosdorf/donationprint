@@ -20,6 +20,7 @@ GetOptions(
 	  bank=s
 	  date=s
 	  person=s
+	  separef=s
 	  receiptdorf
 	  receiptmail
 	  mail1=s
@@ -33,6 +34,7 @@ $opt->{amount}  //= q{     };
 $opt->{bank}    //= q{};
 $opt->{date}    //= q{};
 $opt->{person}  //= q{};
+$opt->{separef} //= 'FIXME';
 $opt->{mail1}   //= q{};
 $opt->{mail2}   //= q{};
 $opt->{mail3}   //= q{};
@@ -42,7 +44,7 @@ my $default_fontsize = 15;
 my $cfg              = {
 	account => {
 		value  => $opt->{account},
-		offset => [ 5, 320 ],
+		offset => [ 5, 265 ],
 	},
 	amount5 => {
 		value => substr( $opt->{amount}, -1, 1 ) // q{},
@@ -66,17 +68,23 @@ my $cfg              = {
 	},
 	bank => {
 		value  => $opt->{bank},
-		offset => [ 5, 285 ],
+		offset => [ 5, 230 ],
 	},
 	date => {
 		value    => $opt->{date},
-		offset   => [ 5, 370 ],
+		offset   => [ 160, 105 ],
 		font     => 'Courier',
 		fontsize => 12,
 	},
 	person => {
 		value  => $opt->{person},
 		offset => [ 5, 250 ],
+	},
+	separef => {
+		value => $opt->{separef},
+		offset => [ 72, 448 ],
+		font => 'Courier',
+		fontsize => 12,
 	},
 	receiptdorf => {
 		value => $opt->{receiptdorf} ? 'X' : q{},
